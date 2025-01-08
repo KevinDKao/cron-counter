@@ -4,6 +4,7 @@ import subprocess
 from datetime import datetime
 
 def append_datetime():
+    print('Appending')
     with open('src/counter.txt', 'a') as file:
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         file.write(f'{current_time}\n')
@@ -24,7 +25,8 @@ def create_git_branch_and_commit():
             # Pull latest changes
             subprocess.run(['git', 'pull', 'origin', branch_name], check=True)
 
-            append_datetime()
+
+        append_datetime()
         
         subprocess.run(['git', 'add', '.'], check=True)
         subprocess.run(['git', 'commit', '-m', "Added new date"], check=True)
