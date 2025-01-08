@@ -8,9 +8,6 @@ def append_datetime():
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         file.write(f'{current_time}\n')
 
-# Example usage
-append_datetime()
-
 def create_git_branch_and_commit():
     today = datetime.now().strftime('%Y-%m-%d')
     branch_name = today
@@ -26,6 +23,8 @@ def create_git_branch_and_commit():
             subprocess.run(['git', 'checkout', branch_name], check=True)
             # Pull latest changes
             subprocess.run(['git', 'pull', 'origin', branch_name], check=True)
+
+            append_datetime()
         
         subprocess.run(['git', 'add', '.'], check=True)
         subprocess.run(['git', 'commit', '-m', "Added new date"], check=True)
