@@ -22,15 +22,18 @@ def create_git_branch_and_commit():
         if result.returncode != 0:
             # If branch already exists, just checkout
             subprocess.run(['git', 'checkout', branch_name], check=True)
-            # Pull latest changes
-            subprocess.run(['git', 'pull', 'origin', branch_name], check=True)
-
+            
+            # Pull latest changes with --rebase to avoid merge commits
+            subprocess.run(['git', 'pull', '--rebase', 'origin', branch_name], check=True)
 
         append_datetime()
         
         subprocess.run(['git', 'add', '.'], check=True)
         subprocess.run(['git', 'commit', '-m', "Added new date"], check=True)
-        subprocess.run(['git', 'push', 'origin', branch_name], check=True)
+        
+        # Add --force if you want to override remote changes
+        # Or remove --force to ensure you don't accidentally override important changes
+        subprocess.run(['git', 'push', '--force', 'origin', branch_name], check=True)
             
     except subprocess.CalledProcessError as e:
         print(f"Error executing Git command: {e.cmd}")
