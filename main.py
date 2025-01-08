@@ -14,15 +14,12 @@ append_datetime()
 
 def create_git_branch_and_commit():
     today = datetime.now().strftime('%Y-%m-%d')
-    branch_name = "main"
+    branch_name = today
     
     try:
         # Git commands with proper argument handling
-        # subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
-        # print(f"Executed: git checkout -b {branch_name}")
-
-        # subprocess.run(['git', 'checkout', 'main'], check=True)
-        # print(f"Executed: git checkout main")
+        subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
+        print(f"Executed: git checkout -b {branch_name}")
         
         subprocess.run(['git', 'add', '.'], check=True)
         print("Executed: git add .")
