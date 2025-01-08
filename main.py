@@ -11,25 +11,25 @@ def append_datetime():
 # Example usage
 append_datetime()
 
-
 def create_git_branch_and_commit():
     today = datetime.now().strftime('%Y-%m-%d')
     branch_name = today
     
     try:
-        # Git commands with proper argument handling
-        subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
-        print(f"Executed: git checkout -b {branch_name}")
+        # Fetch latest changes
+        subprocess.run(['git', 'fetch', 'origin'], check=True)
+        
+        # Try to create and checkout branch
+        result = subprocess.run(['git', 'checkout', '-b', branch_name], capture_output=True, text=True)
+        if result.returncode != 0:
+            # If branch already exists, just checkout
+            subprocess.run(['git', 'checkout', branch_name], check=True)
+            # Pull latest changes
+            subprocess.run(['git', 'pull', 'origin', branch_name], check=True)
         
         subprocess.run(['git', 'add', '.'], check=True)
-        print("Executed: git add .")
-        
-        # Keep commit message as a single argument
         subprocess.run(['git', 'commit', '-m', "Added new date"], check=True)
-        print('Executed: git commit -m "Added new date"')
-        
         subprocess.run(['git', 'push', 'origin', branch_name], check=True)
-        print(f"Executed: git push origin {branch_name}")
             
     except subprocess.CalledProcessError as e:
         print(f"Error executing Git command: {e.cmd}")
