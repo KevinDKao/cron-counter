@@ -96,7 +96,7 @@ def create_git_branch_and_commit():
 
 # Example usage:
 random_number = random.randint(5, 15)
+print(f'Running the GitHub Script for {i+1} times')
 for i in range(random_number):
-    print(f'Running the GitHub Script for {i+1} times')
     create_git_branch_and_commit()
     time.sleep(5)
