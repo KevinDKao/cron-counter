@@ -5,15 +5,29 @@ import random
 import time
 
 REPO_PATH = '/home/kkao/cron-counter'
+# Store your token in an environment variable
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # You'll need to set this environment variable
 
-def set_git_email():
+def set_git_credentials():
     try:
+        # Set email
         subprocess.run(['git', 'config', 'user.email', 'kevindkao@gmail.com'], 
                       check=True,
                       cwd=REPO_PATH)
-        print("Git email configured successfully")
+        
+        # Set the token as credential
+        repo_url = subprocess.check_output(['git', 'config', '--get', 'remote.origin.url'], 
+                                         cwd=REPO_PATH).decode().strip()
+        if repo_url.startswith('https://'):
+            # Convert HTTPS URL to include token
+            new_url = f'https://{GITHUB_TOKEN}@github.com/KevinDKao/cron-counter.git'
+            subprocess.run(['git', 'remote', 'set-url', 'origin', new_url], 
+                         check=True,
+                         cwd=REPO_PATH)
+            
+        print("Git credentials configured successfully")
     except subprocess.CalledProcessError as e:
-        print(f"Error setting Git email: {e}")
+        print(f"Error setting Git credentials: {e}")
 
 def append_datetime():
     print('Appending')
@@ -23,8 +37,8 @@ def append_datetime():
 
 def create_git_branch_and_commit():
     try:
-        # Set Git email first
-        set_git_email()
+        # Set Git credentials first
+        set_git_credentials()
         
         # Stash any existing changes
         subprocess.run(['git', 'stash'], 
